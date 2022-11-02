@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": 
+      [
+        "lambda:InvokeFunction",
+        "states:StartExecution",
+        "states:DescribeExecution",
+        "states:StopExecution"
+      ],
+      "Effect": 
+        "Allow",
+      "Sid": 
+        "",
+      "Resource":
+        "*"
+    },
+    {
+      "Action": 
+      [
+        "events:PutTargets",
+        "events:PutRule",
+        "events:DescribeRule"
+      ],
+      "Effect": 
+        "Allow",
+      "Sid": 
+        "",
+      "Resource":
+        "arn:aws:events:${region}:${account}:rule/StepFunctionsGetEventsForStepFunctionsExecutionRule"
+    }
+  ]
+}
