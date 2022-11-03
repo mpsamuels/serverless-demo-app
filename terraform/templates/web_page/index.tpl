@@ -83,7 +83,6 @@
               let reader = new FileReader()
               reader.onload = (e) => {
                 //check file length and show error if exceeded
-                console.log('length: ', e.target.result.byteLength)
                 if (e.target.result.byteLength > MAX_file_SIZE) {
                   this.file = "Too big"
                   this.too_big = true
@@ -102,15 +101,15 @@
               this.file_extension = ''
               this.file_type = '' 
               this.big = ''
-
             },
             uploadfile: async function (e) {
               console.log('Upload clicked')
+              console.log('Get Signed URL: ', API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type)
               const response = await axios({
                 method: 'GET',
                 url: API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type
               })
-              console.log('Response: ', response)
+              console.log('Get Signed URL Response: ', response)
               var arrayBufferView = new Uint8Array(this.file)
               let blobData = new Blob([ arrayBufferView ])
               console.log('Uploading to: ', response.uploadURL)
@@ -121,7 +120,7 @@
                   'Content-Type': this.file_type
                 }
               })
-              console.log('Result: ', result)
+              console.log('Upload Result: ', result)
               this.uploadURL = response.uploadURL.split('?')[0]
               const filenameDiv = document.getElementById("filename")
               const heading = document.createElement("h1");
@@ -133,12 +132,12 @@
               this.uploadURL = ''
               const newSearch = document.getElementById('dbsearch');
               let newSearchValue= document.getElementById('dbsearch').value;
-
+              console.log('Search DynamoDB: ', 'https://dynamo.${domain}/dynamo?file_name='+newSearchValue)
               const dyanmoresponse = await axios({
                 method: 'GET',
                 url: 'https://dynamo.${domain}/dynamo?file_name='+newSearchValue
               })
-              console.log(dyanmoresponse)
+              console.log('Dynamo Search Response: ',dyanmoresponse)
               document.getElementById("labels").innerHTML = ""
               const labelsDiv = document.getElementById("labels")
               const labelslist = document.createElement("ul");
@@ -152,6 +151,7 @@
               }
               for (let x in dyanmoresponse["File Names"]){
                 let value = dyanmoresponse["File Names"][x];
+                console.log('Retrieve Image: ', 'https://downloader.${domain}/downloader?file_name='+value)
                 const downloaderresponse = await axios({
                   method: 'GET',
                   url: 'https://downloader.${domain}/downloader?file_name='+value

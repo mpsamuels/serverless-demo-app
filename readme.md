@@ -22,7 +22,7 @@
 
 A terraform project which calls a variety of modules to create a media upload and rekognition application based on serverless services.
 
-![Design diagram](/lambda.png)
+The project creates a S3 hosted web front-end that allow upload of image or video files to a private S3 bucket. On upload, Event Bridge invokes a State Function machine which detects the image's MIME-Type and runs the appropriate AWS Rekognition function to establish the labels visible within the media. The labels output is stored in DynamoDB for future reference and is searchable via the web front-end. A Slack notification is also sent on completion of each Rekognition process.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -30,10 +30,11 @@ A terraform project which calls a variety of modules to create a media upload an
 ## Features
 
 The module deploys the following AWS infrastructure:
-* 1x Event Bridge Rule and Target 
-* 1x Lambda function
-* 2x IAM role with IAM policies attached
-* 1x Cloudwatch Log Group
+* 1x DynamoDB
+* 1x S3 Bucket
+* 1x terraform-aws-s3-website module (https://github.com/mpsamuels/terraform-aws-s3-website)
+* 3x terraform-aws-state-machine modules (https://github.com/mpsamuels/terraform-aws-state-machine)
+* 5x terraform-aws-lambda modules (https://github.com/mpsamuels/terraform-aws-lambda)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
