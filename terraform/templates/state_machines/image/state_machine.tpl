@@ -87,7 +87,15 @@
           }
         }
       ],
-      "End": true
+      "ResultPath": null,
+      "Next": "Pass"
+    },
+    "Pass": {
+      "Type": "Pass",
+      "End": true,
+      "InputPath": "$.getLabelDetectionOutput.Labels",
+      "Result": {},
+      "ResultPath": null
     }
   }
 }

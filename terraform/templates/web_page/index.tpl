@@ -43,7 +43,8 @@
   
     <script>
       const MAX_file_SIZE = 10000000
-      const API_ENDPOINT = 'https://signedurl.${domain}/signedurl?' 
+      const SIGNED_URL_API_ENDPOINT = 'https://signedurl.${domain}/signedurl?' 
+      const PROCESS_API_ENDPOINT = 'https://process.${domain}/process?' 
 
       new Vue(
         {
@@ -104,10 +105,10 @@
             },
             uploadfile: async function (e) {
               console.log('Upload clicked')
-              console.log('Get Signed URL: ', API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type)
+              console.log('Getting Signed URL: ', SIGNED_URL_API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type)
               const response = await axios({
                 method: 'GET',
-                url: API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type
+                url: SIGNED_URL_API_ENDPOINT + 'file_extension=' + this.file_extension + '&content_type=' + this.file_type
               })
               console.log('Get Signed URL Response: ', response)
               var arrayBufferView = new Uint8Array(this.file)
@@ -121,6 +122,11 @@
                 }
               })
               console.log('Upload Result: ', result)
+              const process_response = await axios({
+                method: 'GET',
+                url: PROCESS_API_ENDPOINT + 'file_name=' + response["Filename"]
+              })
+              console.log('Rekognition Response: ', process_response)
               this.uploadURL = response.uploadURL.split('?')[0]
               const filenameDiv = document.getElementById("filename")
               const heading = document.createElement("h1");

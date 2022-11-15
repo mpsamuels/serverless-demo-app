@@ -16,6 +16,17 @@
                 "Allow",
             "Resource":    
                 "arn:aws:s3:::${bucket}/*"
+        },
+        {
+            "Action": 
+            [
+                "states:StartExecution",
+                "states:*"
+            ],
+            "Effect": 
+                "Allow",
+            "Resource":    
+                "*"
         }
     ]
 }
